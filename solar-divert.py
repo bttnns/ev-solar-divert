@@ -21,6 +21,18 @@ def senseloop():
     sense.rate_limit = 30
 
     while runSenseLoop:
+        # first check if the evse is even charging
+        r = requests.get("http://" + config.openevse_ip + "/r?rapi=%24GS")
+        result = re.search('\$OK (\d+) ', r.text)
+        evse_state = int(result.group(1))
+
+        if evse_state is not 3:
+            # not charging
+            print('sleeping 300s: evse_state is not charging, state=', evse_state)
+            time.sleep(300)
+            sense.get_realtime()
+            continue
+
         act_kW = sense.active_power
         act_pv_kW = sense.active_solar_power
         act_voltage = sense.active_voltage
