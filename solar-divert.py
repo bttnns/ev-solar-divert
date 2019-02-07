@@ -4,14 +4,23 @@ import sense_energy
 import requests
 import re
 import time
-
 import config
+import asyncio
+from flask import Flask, Response
+from threading import Thread
 
-if __name__ == "__main__":
+app = Flask(__name__)
+
+runSenseLoop = False
+
+def senseloop():
+    asyncio.set_event_loop(asyncio.new_event_loop())
+    global runSenseLoop
+
     sense = sense_energy.Senseable(config.sense_user, config.sense_pass)
     sense.rate_limit = 30
 
-    while True:
+    while runSenseLoop:
         act_kW = sense.active_power
         act_pv_kW = sense.active_solar_power
         act_voltage = sense.active_voltage
@@ -45,7 +54,7 @@ if __name__ == "__main__":
             print('set_evse_current:', set_evse_current)
             print('live_evse_current', live_evse_current)
             print('new_curr', new_curr)
-            
+
         if abs(avail_current) < 1:
             print("no change: avail_current < 1")
         elif set_evse_current > live_evse_current and new_curr >= set_evse_current:
@@ -61,3 +70,24 @@ if __name__ == "__main__":
 
         time.sleep(300)
         sense.get_realtime()
+
+def manualRun():
+    t = Thread(target=senseloop)
+    t.start()
+    return "Started SenseLoop"
+
+@app.route("/start")
+def set_start_run():
+    global runSenseLoop
+    runSenseLoop = True
+    return Response(manualRun(), mimetype="text/html")
+
+@app.route("/stop")
+def set_stop_run():
+    global runSenseLoop
+    runSenseLoop = False
+    return "Stopped SenseLoop"
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
+
