@@ -28,8 +28,8 @@ def senseloop():
 
         if evse_state is not 3:
             # not charging
-            print('sleeping 300s: evse_state is not charging, state=', evse_state)
-            time.sleep(300)
+            print('sleep 900:', evse_state)
+            time.sleep(900)
             sense.get_realtime()
             continue
 
