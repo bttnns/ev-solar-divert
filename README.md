@@ -32,6 +32,6 @@ $ docker run -dt -p 5000:5000 -e AMP_MIN=10 -e AMP_MAX=10 -e SENSE_USER="<sense-
 
 ## How to use
 
-- Open a browser to http://<docker-host>:5000/start to start the loop every 5 minutes
-  - Once started the loop will check conditions every 5 minutes and adjust the configuration based on realtime values from Sense and OpenEVSE
-- Open a browser to http://<docker-host>:5000/stop to stop the loop
+- Open a browser to `http://<docker-host>:5000/start` to start the loop every 5 minutes
+  - Once started the loop will check conditions every 5 minutes, unless LOOP_SLEEP was changed, and adjust the configuration based on realtime values from Sense and OpenEVSE
+- Open a browser to `http://<docker-host>:5000/stop` to stop the loop
