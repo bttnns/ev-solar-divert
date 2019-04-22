@@ -1,6 +1,6 @@
 # EV-Solar-Divert
 
-![travis-build-status](https://travis-ci.com/btannous/ev-solar-divert.svg?branch=master)
+[![travis-build-status](https://travis-ci.com/btannous/ev-solar-divert.svg?branch=master)](https://travis-ci.com/btannous/ev-solar-divert)
 
 Divert excess solar PV Generation to EV using OpenEVSE and Sense Energy.  This takes the current usage and current pv generation from Sense Energy and configures OpenEVSE request an EV plugged in and charging to only pull from the excess solar generation.
 
