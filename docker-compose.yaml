@@ -1,0 +1,16 @@
+--- 
+services: 
+  ev-solar-divert: 
+    image: quay.io/quaa/ev-solar-divert:latest
+    restart: always
+    environment:
+      - AMP_MIN=10
+      - AMP_MAX=40
+      - SENSE_USER=user@email.com
+      - SENSE_PASS=pass
+      - OPENEVSE_IP=192.168.0.0
+      - LOOP_SLEEP=300
+    ports:
+      - '5000:5000'
+version: "3"
+
