@@ -5,8 +5,9 @@ python:
 services:
   - docker
 before_install:
-  - docker build -t ev-solar-divert .
-install:
-  - pip3 install -r requirements.txt
+  - docker build -t quay.io/quaa/ev-solar-divert .
 script:
   - echo "Maybe testing one day..."
+deploy:
+  provider: script
+  script: bash quayio_push.sh
