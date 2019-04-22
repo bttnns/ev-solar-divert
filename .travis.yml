@@ -2,6 +2,10 @@ dist: xenial
 language: python
 python:
   - '3.7'
+services:
+  - docker
+before_install:
+  - docker build -t ev-solar-divert .
 install:
   - pip3 install -r requirements.txt
 script:
