@@ -11,7 +11,13 @@ Basically it results in your vehicle only charging on excess solar, not taking f
 Get this up and running by running it within a container:
 
 ```
-$ docker run -dt -p 5000:5000 -e AMP_MIN=10 -e AMP_MAX=10 -e SENSE_USER="<sense-user>" -e SENSE_PASS="<sense-pass>" -e OPENEVSE_IP="<192.168.0.0>" -e LOOP_SLEEP=300 --name ev-solar-divert quay.io/quaa/ev-solar-divert:latest
+docker run -dt -p 5000:5000 -e AMP_MIN=10 -e AMP_MAX=10 -e SENSE_USER="<sense-user>" -e SENSE_PASS="<sense-pass>" -e OPENEVSE_IP="<192.168.0.0>" -e LOOP_SLEEP=300 --name ev-solar-divert quay.io/quaa/ev-solar-divert:latest
+```
+
+Or if you are using docker-compose, modify the docker-compose.yaml with your environment variables and start via:
+
+```
+docker-compose pull && docker-compose up -d
 ```
 
 ## Configuration
