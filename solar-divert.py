@@ -13,11 +13,19 @@ app = Flask(__name__)
 
 runSenseLoop = False
 
+def refreshSense(sense):
+    try:
+        sense.get_realtime()
+    except:
+        # assume we are logged out
+        sense = sense_energy.Senseable(config.sense_user, config.sense_pass, wss_timeout=60, api_timeout=60)
+        sense.get_realtime()
+
 def senseloop():
     asyncio.set_event_loop(asyncio.new_event_loop())
     global runSenseLoop
 
-    sense = sense_energy.Senseable(config.sense_user, config.sense_pass)
+    sense = sense_energy.Senseable(config.sense_user, config.sense_pass, wss_timeout=60, api_timeout=60)
     sense.rate_limit = 30
 
     while runSenseLoop:
@@ -30,8 +38,7 @@ def senseloop():
             # not charging
             print('sleep 900:', evse_state)
             time.sleep(900)
-            sense.get_realtime()
-            continue
+            refreshSense(sense)
 
         act_kW = sense.active_power
         act_pv_kW = sense.active_solar_power
@@ -81,7 +88,7 @@ def senseloop():
             print(r.text)
 
         time.sleep(300)
-        sense.get_realtime()
+        refreshSense(sense)
 
 def manualRun():
     t = Thread(target=senseloop)
@@ -98,6 +105,7 @@ def set_start_run():
 def set_stop_run():
     global runSenseLoop
     runSenseLoop = False
+    r = requests.get("http://" + config.openevse_ip + "/r?rapi=%24SC+" + str(config.max_curr))
     return "Stopped SenseLoop"
 
 if __name__ == "__main__":
