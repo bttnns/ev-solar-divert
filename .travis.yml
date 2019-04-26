@@ -1,0 +1,13 @@
+dist: xenial
+language: python
+python:
+  - '3.6'
+services:
+  - docker
+before_install:
+  - docker build -t quay.io/quaa/ev-solar-divert .
+script:
+  - echo "Maybe testing one day..."
+deploy:
+  provider: script
+  script: bash quayio_push.sh

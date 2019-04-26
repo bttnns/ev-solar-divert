@@ -87,8 +87,8 @@ def senseloop():
             r = requests.get("http://" + config.openevse_ip + "/r?rapi=%24SC+" + str(new_curr))
             print(r.text)
 
-        time.sleep(300)
-        refreshSense(sense)
+        time.sleep(config.loop_sleep)
+        sense.get_realtime()
 
 def manualRun():
     t = Thread(target=senseloop)
